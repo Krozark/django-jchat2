@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.template import Library, Node
+from django.template import Library, Node, Variable
 
 from django.template.loader import get_template
 from jchat.models import Room
@@ -42,7 +42,7 @@ class GetChatNode(Node):
         t = get_template("jchat/chat.html")
         if self.link_obj:
             self.link_obj = resolve(self.link_obj,context)
-            room = Room.get_or_create(self.link_obj)
+            room = Room.objects.get_or_create(self.link_obj)
         else:
             room = Room.objects.get(id=1)
         context["jchat_room"] = room
