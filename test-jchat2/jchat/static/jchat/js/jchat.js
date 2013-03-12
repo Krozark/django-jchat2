@@ -51,14 +51,16 @@ function renderLine(m){
     	d="0"+d;
     mo = da.getMonth()+1
     if (mo < 10)
-    	mo = "0"+mo
-    y = da.getFullYear()
-    sp = m.timestamp.split(' ')
+    	mo = "0"+mo;
+    y = da.getFullYear();
+    sp = m.timestamp.split(' ');
+    console.log(sp);
+    sp1 = sp[1].split('.')[0];
     //console.log(y+"-"+mo+"-"+d)
     if (y+"-"+mo+"-"+d == sp[0])
-    	sp = sp[1]
+    	sp = sp1
     else
-    	sp = mo+"-"+d+" "+sp[1]
+    	sp = mo+"-"+d+" "+sp1
      msg = '<div class="chat chat-'+m.id+' rounded">'+
                 msg+
                 '<span class="time">'+sp+'</span>'+
