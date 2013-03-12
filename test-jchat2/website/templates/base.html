@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>Test</title>
+
+        <script type="text/javascript" src="/media/js/jquery.js"></script>
+        <script type="text/javascript" src="/media/js/jquery-ui.js"></script>
+        <script src="{{ STATIC_URL }}jchat/js/jquery.cookie.js"></script>
+    </head>
+
+    <body>
+        <script>
+            var django = (function($){
+                var _urls = {}
+                var _conf = {}
+                return {
+                    settings: {
+                        'MEDIA_URL':  '{{ MEDIA_URL }}',
+                        'STATIC_URL': '{{ STATIC_URL }}'
+                    },
+
+                    i18n: function() {
+                        var strs = {};
+                        var get = function(k)    { return _conf[k] }
+                        var set = function(k, v) { return _conf[k] = v }
+                        return arguments.length == 2 
+                        && set(arguments[0], arguments[1]) 
+                        || get(arguments[0])
+                    },
+
+                    urls: function() {
+                        var get = function(k)    { return _urls[k] }
+                        var set = function(k, v) { return _urls[k] = v }
+                        return arguments.length >= 2 
+                        && set(arguments[0], arguments[1]) 
+                        || get(arguments[0])
+                    }
+                }
+            })(jQuery)
+
+            {# http://www.djangoproject.com/weblog/2011/feb/08/security/ #}
+            {# http://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax #}
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if ($.cookie('csrftoken') && (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)))) {
+                        xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'))
+                    }
+                }
+            });
+
+        </script>
+        {% block content %}{% endblock %}
+    </body>
+</head>
